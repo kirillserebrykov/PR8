@@ -1,0 +1,35 @@
+
+const { app, BrowserWindow } = require('electron')
+const path = require('path')
+// create window and set default settings 
+const createWindow = () => {     
+    const win = new BrowserWindow({  
+        width: 800,
+        height: 600,
+        autoHideMenuBar: true, 
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+          }          
+    }) 
+
+    win.loadFile('index.html')
+}
+
+   
+
+
+
+
+// create stream app 
+app.whenReady().then(() => {
+    createWindow()
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    })
+
+})
+//Events 
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit()
+}) 
+
